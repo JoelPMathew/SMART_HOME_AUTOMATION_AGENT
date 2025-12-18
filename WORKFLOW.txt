@@ -1,0 +1,414 @@
+"""
+SMART HOME AI AGENT - WORKFLOW & SYSTEM ARCHITECTURE
+Production-Grade Intelligent Home Automation System
+"""
+
+================================================================================
+                         SYSTEM ARCHITECTURE OVERVIEW
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              USER INTERFACES LAYER                          │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌──────────────────────┐  ┌──────────────────────┐  ┌──────────────────┐  │
+│  │   STREAMLIT UI       │  │   MOBILE APP         │  │   WEB BROWSER    │  │
+│  │   Dashboard 📱       │  │   (Future)           │  │   (REST API)     │  │
+│  │                      │  │                      │  │                  │  │
+│  │ • Device Control     │  │ • Native Interface   │  │ • Custom UI      │  │
+│  │ • Energy Analytics   │  │ • Push Notifications │  │ • API Calls      │  │
+│  │ • Command Center     │  │ • Voice Commands     │  │ • Real-time      │  │
+│  │ • Optimization       │  │                      │  │                  │  │
+│  └──────────┬───────────┘  └──────────┬───────────┘  └──────────┬───────┘  │
+│             │                         │                         │          │
+│             └─────────────────────────┼─────────────────────────┘          │
+│                                       │                                    │
+└───────────────────────────────────────┼────────────────────────────────────┘
+                                        │
+                                        ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        API & ORCHESTRATION LAYER                            │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│                    ┌──────────────────────────────────┐                     │
+│                    │    FLASK REST API BACKEND       │                     │
+│                    │    (Production Grade)           │                     │
+│                    │                                 │                     │
+│    ┌──────────────►│  • /health                      │◄──────────┐         │
+│    │              │  • /status                      │            │         │
+│    │              │  • /command                     │            │         │
+│    │              │  • /device/control              │            │         │
+│    │              │  • /forecast                    │            │         │
+│    │              │  • /optimize                    │            │         │
+│    │              │  • /history/decisions           │            │         │
+│    │              │                                 │            │         │
+│    │              └────────┬─────────────────────────┘            │         │
+│    │                       │                                     │         │
+│  Rate Limiting             │                         CORS         │         │
+│  30-60 req/min            │                      Enabled          │         │
+│    │                       │                                     │         │
+│    └───────────────────────┼─────────────────────────────────────┘         │
+│                            │                                               │
+└────────────────────────────┼───────────────────────────────────────────────┘
+                             │
+                             ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                    SMART HOME AGENT LOGIC LAYER                             │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   ┌─────────────────┐    ┌──────────────────────┐    ┌─────────────────┐  │
+│   │  RULES ENGINE   │    │  CONTEXT BUILDER     │    │  LLM            │  │
+│   │                 │    │                      │    │  INTEGRATION    │  │
+│   │ • Peak hours    │    │ • Temperature        │    │                 │  │
+│   │ • Occupancy     │    │ • Humidity           │    │ • Natural       │  │
+│   │ • Weather       │    │ • Occupancy          │    │   Language      │  │
+│   │ • Comfort       │    │ • Energy             │    │ • Reasoning     │  │
+│   │ • Off-peak      │    │ • Weather            │    │ • Understanding │  │
+│   │                 │    │ • Forecast           │    │                 │  │
+│   └────────┬────────┘    └──────────┬───────────┘    └────────┬────────┘  │
+│            │                        │                         │            │
+│            └────────────────────────┼─────────────────────────┘            │
+│                                     │                                      │
+│                    ┌────────────────▼─────────────────┐                    │
+│                    │   SMART HOME AGENT               │                    │
+│                    │   (Central Orchestrator)         │                    │
+│                    │                                  │                    │
+│                    │ • Command Processing             │                    │
+│                    │ • Decision Making                │                    │
+│                    │ • Device Coordination            │                    │
+│                    │ • History Tracking               │                    │
+│                    │ • Status Management              │                    │
+│                    └────────────────┬─────────────────┘                    │
+│                                     │                                      │
+└─────────────────────────────────────┼──────────────────────────────────────┘
+                                      │
+                                      ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                       DATA SOURCES & INTEGRATION LAYER                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌─────────────────┐  ┌──────────────────────┐  ┌─────────────────────┐   │
+│  │  MQTT BROKER    │  │  ENERGY FORECASTER   │  │  DATA LOADER        │   │
+│  │                 │  │                      │  │                     │   │
+│  │ • Device Comms  │  │ • Prophet Model      │  │ • Kaggle API        │   │
+│  │ • Real-time     │  │ • LSTM (optional)    │  │ • UCI Household     │   │
+│  │ • Pub/Sub       │  │ • 24-168h Forecast   │  │ • London Smart      │   │
+│  │ • State Sync    │  │ • Peak Probability   │  │ • Smart Home Energy │   │
+│  │                 │  │ • Confidence         │  │ • IoT Sensor Data   │   │
+│  └────────┬────────┘  └──────────┬───────────┘  └─────────┬───────────┘   │
+│           │                      │                        │                │
+│           └──────────────────────┼────────────────────────┘                │
+│                                  │                                         │
+│                    ┌─────────────▼─────────────┐                          │
+│                    │  OpenWeather API          │                          │
+│                    │  • Current conditions     │                          │
+│                    │  • Weather forecasts      │                          │
+│                    └───────────┬────────────────┘                          │
+│                                │                                          │
+└────────────────────────────────┼──────────────────────────────────────────┘
+                                 │
+                                 ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                        SMART DEVICES LAYER                                  │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ACTUATORS:                                                                │
+│  ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌──────────┐  ┌─────────┐        │
+│  │ LIGHTS  │  │THERMOSTAT│ │  HVAC   │  │  WATER   │  │ PLUGS   │        │
+│  │         │  │          │  │         │  │ HEATER   │  │         │        │
+│  │ On/Off  │  │18-30°C   │  │ On/Off  │  │ On/Off   │  │ On/Off  │        │
+│  │ Dimming │  │ Auto/Eco │  │ Speed   │  │  Charge  │  │ Enabled │        │
+│  └────┬────┘  └────┬─────┘  └────┬────┘  └────┬─────┘  └────┬────┘       │
+│       │            │             │            │             │             │
+│       └────────────┼─────────────┼────────────┼─────────────┘             │
+│                    │                                                      │
+│  SENSORS:          │                                                      │
+│  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌──────────────┐             │
+│  │TEMPERATURE│ │ HUMIDITY │  │ MOTION   │  │ ENERGY METER │             │
+│  │ Sensor   │  │ Sensor   │  │ Sensor   │  │ Monitor      │             │
+│  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────┬───────┘             │
+│       │             │             │               │                      │
+│       └─────────────┼─────────────┼───────────────┘                      │
+│                     │                                                    │
+└─────────────────────┼────────────────────────────────────────────────────┘
+                      │
+                      ▼
+                  MQTT Topics
+                  (home/*)
+
+================================================================================
+                              DATA FLOW DIAGRAM
+================================================================================
+
+USER COMMAND:
+┌─────────┐   "Turn on lights"   ┌──────────┐   POST /command   ┌─────────┐
+│ Streamlit│─────────────────────►│  Flask   │──────────────────►│ Agent   │
+│ Dashboard│                      │   API    │                   │Process  │
+└─────────┘                       └──────────┘                   └────┬────┘
+                                                                      │
+                                                                      ▼
+                                                         ┌──────────────────┐
+                                                         │ Command Handler  │
+                                                         ├──────────────────┤
+                                                         │ Try device ctrl  │
+                                                         │ Try info query   │
+                                                         │ LLM reasoning    │
+                                                         └────────┬─────────┘
+                                                                  │
+                                                                  ▼
+                                                         ┌──────────────────┐
+                                                         │ Control Device   │
+                                                         │ via MQTT         │
+                                                         └────────┬─────────┘
+                                                                  │
+                                                    ┌─────────────┘
+                                                    │
+                                                    ▼
+DEVICE STATE UPDATE:
+┌──────────────┐   MQTT Publish   ┌──────────────┐   Update   ┌──────────┐
+│ Smart Device │─────────────────►│ MQTT Broker  │───────────►│ UI Cache │
+│ (Light)      │                  │              │            │ Updates  │
+└──────────────┘                  └──────────────┘            └──────────┘
+
+
+ENERGY OPTIMIZATION (Autonomous):
+┌─────────────────┐         ┌────────────────────┐      ┌──────────────┐
+│ Context Builder │────────►│ Rules Engine       │─────►│ Smart Home   │
+│ • Temp          │         │ Evaluate Rules     │      │ Agent        │
+│ • Humidity      │         │ • Peak hours       │      │ Executes     │
+│ • Occupancy     │         │ • Occupancy        │      │ Decisions    │
+│ • Energy        │         │ • Weather          │      │              │
+│ • Weather       │         │ • Comfort          │      │ Publishes    │
+│ • Forecast      │         │                    │      │ to MQTT      │
+└────────┬────────┘         └────────────────────┘      └──────────────┘
+         │
+         ├─ Every 5 minutes (configurable)
+         └─ Decision history logged to database
+
+
+FORECASTING PIPELINE:
+┌──────────────────┐  Train  ┌──────────────────┐  Generate  ┌──────────┐
+│ Historical Data  │────────►│ Prophet/LSTM     │───────────►│ Forecast │
+│ (Kaggle)         │         │ Model            │            │ Data     │
+│                  │         │                  │            │ (24-168h)│
+│ • UCI Household  │         │ • Daily          │            │          │
+│ • London Smart   │         │ • Weekly         │            │ Cached   │
+│ • Smart Home     │         │ • Seasonal       │            │ 1h TTL   │
+│ • IoT Sensors    │         │                  │            │          │
+└──────────────────┘         └──────────────────┘            └──────────┘
+
+
+SYSTEM DECISION LOOP:
+┌────────┐  Read Context  ┌──────────┐  Generate  ┌──────────┐  Execute  ┌────────┐
+│ Sensors│──────────────►│ Context  │─────────►│ Decisions│────────►│ Devices│
+│ & Data │              │ Builder  │          │ Engine   │         │        │
+└────────┘              └──────────┘          └──────────┘         └────────┘
+   ▲                                                │
+   │                                                │
+   └────────────────── Feedback Loop ──────────────┘
+           (Every 5 minutes by default)
+
+================================================================================
+                           DECISION MAKING FLOW
+================================================================================
+
+USER COMMAND RECEIVED
+         │
+         ▼
+┌─────────────────────────┐
+│ Parse Command           │
+│ Extract Intent & Params │
+└────────┬────────────────┘
+         │
+         ▼
+    ┌─────────────────────────────────────────┐
+    │ Try Simple Device Control Pattern Match │
+    │ "turn [on/off] [device]"                │
+    │ "set [device] to [value]"               │
+    └──────┬──────────────────────────────────┘
+           │
+    ┌──────┴──────────┐
+    │                 │
+   YES                NO
+    │                 │
+    ▼                 ▼
+ Execute      Try Information Query
+   via         "temperature", "forecast",
+  MQTT         "weather", "occupancy"
+               "device status"
+    │                 │
+    │            ┌────┴────┐
+    │           YES        NO
+    │            │         │
+    │            ▼         ▼
+    │         Return    Use LLM
+    │         Info      Reasoning
+    │                   (Context-Aware)
+    │                   │
+    │                   ▼
+    │            Extract Action
+    │            from Response
+    │                   │
+    └───────────────────┼───────────────┐
+                        │               │
+                        ▼               ▼
+                   EXECUTE          INFORM USER
+                   via MQTT
+
+
+AUTONOMOUS OPTIMIZATION LOOP (Every 5 min):
+
+1. BUILD CONTEXT
+   ├─ Current temperature
+   ├─ Humidity level
+   ├─ Occupancy status (motion sensors)
+   ├─ Current energy consumption
+   ├─ Current time (hour)
+   ├─ Weather conditions
+   ├─ Device states
+   └─ Energy forecast (24h)
+
+2. EVALUATE RULES (Priority Order)
+   ├─ Peak Hour Rules (5 PM - 9 PM)
+   │  └─ If energy > MIN_THRESHOLD → Reduce by 20%
+   │
+   ├─ Occupancy Rules
+   │  ├─ If occupied → Comfort mode
+   │  └─ If unoccupied → Eco mode
+   │
+   ├─ Weather Rules
+   │  ├─ Rain/Snow → Ensure hot water
+   │  ├─ Sunny → Use natural light
+   │  └─ Cold/Hot → Adjust temperature
+   │
+   ├─ Comfort Rules
+   │  ├─ Temp out of range → Adjust HVAC
+   │  └─ Humidity out of range → Activate humidifier
+   │
+   └─ Off-Peak Rules (11 PM - 7 AM)
+      └─ If off-peak → Allow charging
+
+3. GENERATE DECISIONS
+   └─ Dict: {device: action}
+
+4. EXECUTE DECISIONS
+   └─ Publish to MQTT for each device
+
+5. LOG & TRACK
+   └─ Store decision in history
+
+================================================================================
+                        CONFIGURATION MANAGEMENT
+================================================================================
+
+PRIMARY CONFIG: config.py
+├─ MQTT Settings
+│  ├─ MQTT_BROKER
+│  ├─ MQTT_PORT
+│  ├─ MQTT_USERNAME / PASSWORD
+│  └─ MQTT_TOPICS (device subscriptions)
+│
+├─ Flask Settings
+│  ├─ FLASK_HOST
+│  ├─ FLASK_PORT
+│  ├─ FLASK_DEBUG
+│  └─ API_TIMEOUT
+│
+├─ Forecasting
+│  ├─ FORECAST_PERIODS
+│  ├─ FORECAST_MODEL
+│  └─ Energy thresholds
+│
+├─ Device Definitions
+│  ├─ lights (binary, 100W)
+│  ├─ thermostat (continuous, 3000W)
+│  ├─ hvac (binary, 5000W)
+│  ├─ water_heater (binary, 4500W)
+│  └─ plugs (binary, 2000W)
+│
+└─ Optimization Rules
+   ├─ Peak hours (17:00-21:00, 20% reduction)
+   ├─ Off-peak hours (23:00-07:00, allow charging)
+   └─ Comfort constraints
+
+ENVIRONMENT: .env
+├─ API Keys (OpenAI, Deepseek, Weather)
+├─ Kaggle credentials
+├─ MQTT credentials
+└─ Feature flags
+
+
+================================================================================
+                       MONITORING & OBSERVABILITY
+================================================================================
+
+METRICS TO TRACK:
+├─ System Health
+│  ├─ MQTT uptime
+│  ├─ API response times
+│  ├─ Forecast generation time
+│  └─ Device control success rate
+│
+├─ Energy
+│  ├─ Current consumption
+│  ├─ Daily usage
+│  ├─ Peak hours reduction %
+│  └─ Forecast accuracy
+│
+├─ Automation
+│  ├─ Decisions generated
+│  ├─ Decisions executed
+│  ├─ Device state updates
+│  └─ Command success rate
+│
+└─ Business
+   ├─ Energy savings $
+   ├─ User commands processed
+   ├─ Rule violations
+   └─ Peak hour avoidance
+
+
+LOGGING:
+├─ INFO: Normal operations
+├─ DEBUG: Detailed decision making
+├─ WARNING: Missed connections, timeouts
+├─ ERROR: Failed device control, API errors
+└─ CRITICAL: System failures
+
+
+API RATE LIMITS:
+├─ Health check: 60 req/min
+├─ Status: 30 req/min
+├─ Command: 30 req/min
+├─ Device control: 60 req/min
+├─ Forecast: 20 req/min
+└─ Optimization: 10 req/min
+
+================================================================================
+                            DEPLOYMENT OPTIONS
+================================================================================
+
+DEVELOPMENT:
+$ python main.py dev
+└─ Starts backend (5000) + frontend (8501)
+
+PRODUCTION - DOCKER:
+$ docker build -t smart-home-agent .
+$ docker run -p 5000:5000 -p 8501:8501 \
+  -e MQTT_BROKER=broker.local \
+  smart-home-agent
+
+PRODUCTION - KUBERNETES:
+$ kubectl apply -f deployment.yaml
+├─ Backend Pod (Flask)
+├─ Frontend Pod (Streamlit)
+└─ MQTT Service (ConfigMap)
+
+PRODUCTION - MANUAL:
+Terminal 1: $ python app_prod.py
+Terminal 2: $ streamlit run ui_streamlit.py
+
+================================================================================
+                         END OF WORKFLOW DOCUMENTATION
+================================================================================
+"""
